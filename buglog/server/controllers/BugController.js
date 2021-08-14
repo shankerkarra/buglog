@@ -65,7 +65,7 @@ export class BugController extends BaseController {
   async edit(req, res, next) {
     try {
       req.body.id = req.params.id
-      // req.body.creatorId = req.userInfo.id
+      req.body.creatorId = req.userInfo.id
       const bug = await bugsService.updateBug(req.body)
       res.send(bug)
     } catch (error) {
@@ -75,12 +75,12 @@ export class BugController extends BaseController {
 
   async destroy(req, res, next) {
     try {
-      const user = req.userInfo
+      req.body.creatorId = req.userInfo.id
       req.body.id = req.params.id
       // await bugsService.updateBug(req.body)
       // const bug = await bugsService.updateBug(req.body)
       // res.send(bug)
-      await bugsService.destroy(req.params.id, req.body, user)
+      await bugsService.destroy(req.body)
       res.send({ message: 'That Bug has been closed!' })
     } catch (error) {
       next(error)

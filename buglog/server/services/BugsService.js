@@ -21,15 +21,17 @@ class BugsService {
   }
 
   async updateBug(body) {
-    const bug = await dbContext.Bugs.findByIdAndUpdate(body.id, body, { new: true, runValidators: true })
+    const bug = await dbContext.Bugs.findOneAndUpdate(body.id, body, { new: true, runValidators: true })
     if (!bug) {
       throw new BadRequest('Invalid Bug ID')
     }
     return bug
   }
 
-  async destroy(req.params.id,  req.body) {
-    const bug = await dbContext.Bugs.findOneAndUpdate(body.id, body, { new: true, runValidators: true })
+  // findOneAndUpdate
+
+  async destroy(body) {
+    const bug = await dbContext.Bugs.findByIdAndUpdate(body.id, body, { new: true, runValidators: true })
     if (!bug) {
       throw new BadRequest('Invalid Bug ID')
     }
