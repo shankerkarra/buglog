@@ -13,7 +13,7 @@ export class BugController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
       .put('/:id', this.edit)
-      .destroy('/:id', this.destroy)
+      .delete('/:id', this.delete)
   }
 
   // GET: 'api/bugs': returns a list of all the bugs - Done
@@ -73,14 +73,14 @@ export class BugController extends BaseController {
     }
   }
 
-  async destroy(req, res, next) {
+  async delete(req, res, next) {
     try {
       req.body.creatorId = req.userInfo.id
       req.body.id = req.params.id
       // await bugsService.updateBug(req.body)
       // const bug = await bugsService.updateBug(req.body)
       // res.send(bug)
-      await bugsService.destroy(req.body)
+      await bugsService.delete(req.body)
       res.send({ message: 'That Bug has been closed!' })
     } catch (error) {
       next(error)

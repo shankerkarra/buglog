@@ -8,7 +8,7 @@ function loadPage(page) {
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Bugs',
     component: loadPage('HomePage')
   },
   {
@@ -21,7 +21,13 @@ const routes = [
     name: 'Account',
     component: loadPage('AccountPage'),
     beforeEnter: authGuard
+  },
+  {
+    path: '/bugs/:budId/bugdetails',
+    name: 'ProjectBacklog',
+    component: loadPage('BugDetailsPage')
   }
+
 ]
 
 export const router = createRouter({
