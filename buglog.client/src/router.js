@@ -17,14 +17,19 @@ const routes = [
     component: loadPage('AboutPage')
   },
   {
+    path: '/newbug',
+    name: 'NewBug',
+    component: loadPage('NewBugPage')
+  },
+  {
     path: '/account',
     name: 'Account',
     component: loadPage('AccountPage'),
     beforeEnter: authGuard
   },
   {
-    path: '/bugs/:budId/bugdetails',
-    name: 'ProjectBacklog',
+    path: '/bugs/:bugId/bugdetails',
+    name: 'BugDetails',
     component: loadPage('BugDetailsPage')
   }
 

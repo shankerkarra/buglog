@@ -1,33 +1,11 @@
 <template>
-  <!-- <div class="row justify-content-center">
-    <ProjectForm />
-  </div> -->
-  <!-- <div class="row justify-content-center mt-3">
-      <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
-  </div> -->
   <div class="container">
-    <h3 class="p-3 text-center">
-      Vue 3 - Display a list of items with v-for
-    </h3>
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Creator Nam</th>
-          <th>Last Updated</th>
-          <th>Bug Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="b in bugs" :key="b._id">
-          <!-- <tr v-for="user in users" :key="user.id"> -->
-          <td>{{ b.title }}</td>
-          <td>{{ b.creator.name }}</td>
-          <td>{{ b.updatedAt }}</td>
-          <td>{{ b.closed }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row justify-content-center">
+      <BugForm />
+    </div>
+  </div>
+  <div class="row justify-content-center mt-3">
+    <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
   </div>
 </template>
 
@@ -36,11 +14,12 @@ import { AuthService } from '../services/AuthService'
 import { AppState } from '../AppState'
 import { computed, onMounted, reactive } from 'vue'
 import { bugService } from '../services/BugService'
+import BugForm from '../components/BugForm.vue'
 import Pop from '../utils/Notifier'
 
 export default {
   name: 'Bugs',
-  setup() {
+  setup(bugs) {
     onMounted(async() => {
       try {
         await bugService.getAll()
@@ -48,6 +27,13 @@ export default {
         Pop.toast('Couldn\'t find Bugs - ', error)
       }
     })
+    // methods: {
+    //     createdDate: computed(() => {
+    //     const d = new Date(bugs.updatedAt)
+    //     return new Intl.DateTimeFormat('en-US').format(d)
+    //     // new TimeAgo(d) props.project.createdAt
+    //   })
+    // },
     const state = reactive({
       dropOpen: false
     })
@@ -55,6 +41,11 @@ export default {
       state,
       user: computed(() => AppState.user),
       bugs: computed(() => AppState.bugs),
+      // createdDate: computed(() => {
+      //   const d = new Date(bugs.updatedAt)
+      //   return new Intl.DateTimeFormat('en-US').format(d)
+      //   // new TimeAgo(d) props.project.createdAt
+      // }),
       async login() {
         AuthService.loginWithPopup()
       },
@@ -64,7 +55,7 @@ export default {
     }
   },
   components: {
-    // ProjectForm
+    BugForm
   }
 }
 </script>

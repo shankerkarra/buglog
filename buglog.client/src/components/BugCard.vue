@@ -1,13 +1,10 @@
 <template>
   <div class="col-md-7 col-7 bg-light d-flex mt-3 justify-content-between align-items-center">
-    <!-- <router-link :to="{ name: 'ProjectBacklog', params: {projectId: project.id} }"> -->
+    <!-- <router-link :to="{ name: 'BugDetail', params: {BugUd: bug.id} }"> -->
     <td>{{ bug.title }}</td>
     <td>{{ bug.creator.name }}</td>
-    <td>{{ bug.updatedAt }}</td>
-
+    <td>{{ createdDate }}</td>
     <!-- </router-link> -->
-
-    <img class="rounded-circle" :src="account.picture" :alt="account.name" height="40">
   </div>
 </template>
 
@@ -21,9 +18,14 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
     return {
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      createdDate: computed(() => {
+        const d = new Date(props.bug.updatedAt)
+        return new Intl.DateTimeFormat('en-US').format(d)
+      // new TimeAgo(d) props.project.createdAt
+      })
     }
   }
 }

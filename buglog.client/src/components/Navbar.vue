@@ -24,14 +24,14 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link :to="{ name: 'Bugs' }" class="nav-link">
-            Bugs
+            Bugs List
           </router-link>
         </li>
-        <!-- <li class="nav-item">
-          <router-link :to="{ name: 'About' }" class="nav-link">
-            About
+        <li class="nav-item">
+          <router-link :to="{ name: 'NewBug' }" class="nav-link">
+            Add a Bug
           </router-link>
-        </li> -->
+        </li>
       </ul>
       <span class="navbar-text">
         <button

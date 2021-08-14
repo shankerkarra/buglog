@@ -3,11 +3,13 @@
     <Navbar />
   </header>
   <main>
-    <router-view />
+    <div class="container-fluid">
+      <router-view />
+    </div>
   </main>
   <footer>
     <div class="bg-dark text-light text-center p-4">
-      Made with Shanker Karra (Under CodeWorks Training)
+      Made by Shanker Karra (Under CodeWorks Training)
     </div>
   </footer>
 </template>
