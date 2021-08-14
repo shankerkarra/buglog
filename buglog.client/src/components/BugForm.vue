@@ -5,9 +5,9 @@
         <input
           type="text"
           name="name"
-          v-model="state.newBug.Title"
+          v-model="state.newBug.title"
           class="form-control"
-          placeholder="Bug Title..."
+          placeholder="Bug Titlte..."
           required
         />
       </div>
@@ -45,10 +45,10 @@ export default {
       state,
       async create() {
         try {
-          debugger
+          // debugger
           const newId = await bugService.create(state.newBug)
           await bugService.getAll()
-          state.newProject = {}
+          state.newBug = {}
           router.push({ name: 'BugDetails', params: { bugId: newId } })
         } catch (error) {
           Pop.toast('We could not make that Bug', error)

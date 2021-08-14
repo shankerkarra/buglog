@@ -4,7 +4,6 @@ import { api } from './AxiosService'
 
 class BugService {
   async getAll() {
-    debugger
     const res = await api.get('api/bugs')
     logger.log('All the bugs : ', res.data)
     AppState.bugs = res.data
@@ -17,8 +16,8 @@ class BugService {
   }
 
   async create(body) {
-    debugger
-    const res = await api.post('api/bugs', body)
+    // debugger
+    const res = await api.post('api/bugs/', body)
     // logger.log('Added A project : ', res.data)
     AppState.bugs.push(res.data)
     return res.data.id
