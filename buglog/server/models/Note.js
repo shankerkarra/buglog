@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 export const Note = new Schema(
   {
     body: { type: String, required: true },
-    bugId: { type: Object },
+    bugId: { type: Schema.Types.ObjectId, ref: 'Bug', required: true },
     creatorId: { type: Schema.Types.ObjectId, ref: 'Account', required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }
@@ -19,7 +19,7 @@ Note.virtual('creator', {
 
 Note.virtual('bug', {
   localField: 'bugId',
-  ref: 'bug',
+  ref: 'Bug',
   foreignField: '_id',
   justOne: true
 })
