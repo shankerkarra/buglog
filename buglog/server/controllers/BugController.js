@@ -52,6 +52,7 @@ export class BugController extends BaseController {
 
   async create(req, res, next) {
     try {
+      // debugger
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorId = req.userInfo.id
       const bug = await bugsService.create(req.body)
