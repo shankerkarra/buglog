@@ -14,10 +14,11 @@
     </div> -->
       <div class="row m-1 p-1 border">
         <div class="col-4">
-          Bug Title:<br> {{ bug.title }}
+          <h5>Bug Title:</h5>
+          {{ bug.title }}
         </div>
         <div class="col-4">
-          Bug created Date:<br> {{ bug.updatedAt }}
+          <h5> Bug created Date:</h5> {{ bug.updatedAt }}
         </div>
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
@@ -29,43 +30,92 @@
       </div>
       <div class="row m-1 p1 border">
         <div class="col-12">
-          Bug Description: <br> {{ bug.description }}
+          <h5>Bug Description:</h5>{{ bug.description }}
         </div>
       </div>
     </div>
-    <div class="row hoverable justify-content-center">
-      <h5 class="pt-3" @click="destory(bug.id)">
+    <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
+      <h5 class="pt-3" @click="destory(bug.id)" v-if="bug.closed === false">
         🗑 Close the bug
       </h5>
     </div>
-    <!-- <div>
-      <button type="button" class="btn btn-success" data-dismiss="modal">
-        Add Notes
-      </button>
-    </div> -->
+    <div class="row" v-if="user.isAuthenticated">
+      <div class="col-4">
+        <p style="color: Green;" v-if="bug.closed === false">
+          <button type="button" class="btn btn-success" data-dismiss="modal">
+            Edit
+          </button>
+        </p>
+      </div>
+    </div>
   </div>
   <div class="col-md-12 col-12 bg-primary mt-3 justify-content-between align-items-center">
     <div class="bugnoteInfo m-1 p-1">
       <div class="row m-1 p-2 border">
-        <div class="container-md">
-          <div class="modal-footer justify-content-between">
-            <div class="col-md-2 col-2">
-              <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
-                Add Notes
-              </button>
-            </div>
-          </div>
-          <!-- <div>
-            <button type="button" class="btn btn-success" data-dismiss="modal">
+        <!-- <div class="container-md"> -->
+        <div class="modal-footer justify-content-between" v-if="user.isAuthenticated">
+          <div class="col-md-2 col-2" v-if="bug.closed === false">
+            <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
               Add Notes
             </button>
-          </div> -->
-          <!-- <div class="row justify-content-center">
-            <BugForm />
-          </div> -->
+          </div>
         </div>
+        <!-- </div> -->
         <div class="row justify-content-center mt-3">
           <NotesCard v-for="n in notes" :key="n.id" :note="n" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Notes -->
+  <div class="modal fade"
+       :id="'Notes'"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="notesTitle"
+       aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-between">
+          <h5 class="modal-title" id="notesTitle">
+            Notes for Bug Title : <br>
+            <small>{{ bug.title }}</small>
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-start">
+            <div class="post-form">
+              <form class="d-flex" @submit.prevent="create">
+                <div class="form-group col-md-12 pt-3">
+                  <input
+                    type="text"
+                    name="body"
+                    class="form-control"
+                    v-model="state.newNote.body"
+                    placeholder="Leave a note..."
+                    required
+                  />
+                </div>
+                <div class="d-flex align-items-center">
+                  <button type="submit" class="btn btn-outline-dark">
+                    Add
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <div class="col-md-2 col-2">
+            <button type="button" class="btn btn-dark" data-dismiss="modal" data-toggle="modal" :data-target="'#Task'">
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -100,6 +150,7 @@ export default {
     return {
       state,
       account: computed(() => AppState.account),
+      user: computed(() => AppState.user),
       bugcreator: computed(() => AppState.activebug.creator.Id),
       bug: computed(() => AppState.activebug),
       notes: computed(() => AppState.notes),
@@ -149,6 +200,7 @@ export default {
    cursor: pointer;
   }
 .border{
+  border-style: solid;
    box-sizing: border-box;
    margin-bottom: 1;
 }
