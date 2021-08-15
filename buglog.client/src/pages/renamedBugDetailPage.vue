@@ -20,7 +20,7 @@
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">
                 {{ currentbug.name }}
-               </h5>
+              </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -40,11 +40,11 @@
             <div class="modal-body" v-else>
               <p>{{ currentbug.description }}</p>
               <div class="pt-3" v-if="current.closed">
-               Bug Status: Closed
+                Bug Status: Closed
               </div>
               <div class="pt-3" v-else>
-               Bug Status: Open
-             </div>
+                Bug Status: Open
+              </div>
               <h5 class="pt-3 hoverable text-right pr-3" data-dismiss="modal" @click="destroy(currentbug.id)">
                 🗑
               </h5>
@@ -113,13 +113,13 @@ import { useRoute, useRouter } from 'vue-router'
 import Pop from '../utils/Notifier'
 import { noteService } from '../services/NoteService'
 import { bugService } from '../services/BugService'
-import { logger } from '../utils/Logger'
+// import { logger } from '../utils/Logger'
 
 export default {
   name: 'BugDetail',
   setup() {
     const route = useRoute()
-    const router = useRouter()
+    // const router = useRouter()
     const state = reactive({
       newTask: { }
     })
@@ -144,7 +144,7 @@ export default {
     return {
       state,
       currentbug: computed(() => AppState.activebug),
-      notes: computed(() => AppState.notes),
+      notes: computed(() => AppState.notes)
       // total: computed(caculateTotal),
       // One Liner Way to call the function
       // total: computed(() => AppState.tasks.reduce((total, task) => total + task.weight), 0),
@@ -162,10 +162,10 @@ export default {
       //   } catch (error) {
       //     Pop.toast('We couldn\'t make that Task - ', error)
       //   }
-      }
     }
   }
 }
+
 </script>
 
 <style scoped lang="scss">
