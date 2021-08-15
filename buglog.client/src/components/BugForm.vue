@@ -47,7 +47,7 @@ export default {
         try {
           // debugger
           const newId = await bugService.create(state.newBug)
-          logger.log(newId)
+          // logger.log(newId)
           await bugService.getAll()
           state.newBug = {}
           router.push({ name: 'BugDetails', params: { bugId: newId } })

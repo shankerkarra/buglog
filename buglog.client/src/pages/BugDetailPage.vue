@@ -104,7 +104,7 @@ export default {
       bug: computed(() => AppState.activebug),
       notes: computed(() => AppState.notes),
       createdDate: computed(() => {
-        const d = new Date(bug.updatedAt)
+        const d = new Date(AppState.activebug.updatedAt)
         return new Intl.DateTimeFormat('en-US').format(d)
       // new TimeAgo(d) props.project.createdAt
       }),
