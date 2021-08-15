@@ -9,6 +9,11 @@ class NoteService {
     AppState.notes = res.data
   }
 
+  async getNotesByBugId(id) {
+    const res = await api.get('api/Notes/' + id)
+    AppState.notes = res.data
+  }
+
   async create(body) {
     const res = await api.post('api/notes', body)
     logger.log('Created Note', res.data)

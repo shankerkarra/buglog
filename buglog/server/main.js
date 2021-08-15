@@ -1,3 +1,4 @@
+import 'sweetalert2/dist/sweetalert2.min.css'
 import express from 'express'
 import { socketProvider } from './SocketProvider'
 import { Startup } from './Startup'
