@@ -31,10 +31,6 @@ export default {
         const d = new Date(props.bug.updatedAt)
         return new Intl.DateTimeFormat('en-US').format(d)
       // new TimeAgo(d) props.project.createdAt
-      }),
-      bugStatus: computed(() => {
-        const b = new Date(props.bug.closed)
-        // v-if d= true ? retun Closed' | retun 'Open'
       })
     }
   }
