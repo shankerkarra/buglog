@@ -1,5 +1,5 @@
 <template>
-  <div class="Bug-form border border-grey">
+  <div class="Bug-form">
     <form class="d-flex" @submit.prevent="create">
       <div class="form-group col-md-5 pt-3">
         <input

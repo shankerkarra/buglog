@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container-md">
     <div class="row justify-content-center">
       <BugForm />
     </div>
   </div>
-  <div class="row justify-content-center mt-3">
+  <div class="row justify-content-center mt-1">
     <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
   </div>
 </template>
