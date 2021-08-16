@@ -3,8 +3,9 @@
     <div class="bugInfo m-1 p-1">
       <div class="col-md-6" v-if="user.isAuthenticated">
         <div class="row bg-dark">
-          <div class="col-md-6 col-12">
+          <div class="col-md-6 col-12 ">
             <small>{{ bug.creator.name }}</small>
+            &nbsp;
             <img
               :src="bug.creator.picture"
               alt="user photo"
