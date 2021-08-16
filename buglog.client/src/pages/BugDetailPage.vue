@@ -17,10 +17,10 @@
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
-        <!-- Commented to understand the way to code as on load it is throwing error -->
-        <!-- <div class="col-4" v-if="user.isAuthenticated">
-        <h5> Bug created Date: </h5> {{ createdDate }}
-        </div> -->
+        <!-- Commented to understand the way to code as on load it is throwughing  -->
+        <div class="col-4" v-if="user.isAuthenticated">
+          <h5> Bug created Date:</h5> {{ createdDate }}
+        </div>
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
             Bug Status: Open

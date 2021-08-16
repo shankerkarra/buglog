@@ -1,5 +1,6 @@
 <template>
   <div class="col-md-7 col-12 bg-light d-flex mt-1 justify-content-between align-items-center">
+    <!-- <router-link :to="{ name: 'BugDetail', params: {BugUd: bug.id} }"> -->
     <router-link :to="{ name: 'BugDetails', params: {bugId: bug.id} }">
       <td> {{ bug.title }}</td>
     </router-link>
