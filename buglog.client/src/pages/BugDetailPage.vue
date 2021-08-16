@@ -1,17 +1,19 @@
 <template>
   <div class="col-md-12 col-12 bg-light mt-3 justify-content-between align-items-center">
     <div class="bugInfo m-1 p-1">
-      <!-- <div class="row bg-dark">
-      <div class="col-12">
-        {{ bug.creator.name }}
-        <img
-          :src="bug.creator.picture"
-          alt="user photo"
-          height="50"
-          class="rounded"
-        />
+      <div class="col-md-6" v-if="user.isAuthenticated">
+        <div class="row bg-dark">
+          <div class="col-md-6 col-12">
+            <small>{{ bug.creator.name }}</small>
+            <img
+              :src="bug.creator.picture"
+              alt="user photo"
+              height="50"
+              class="rounded"
+            />
+          </div>
+        </div>
       </div>
-     </div> -->
       <div class="row m-1 p-1 border">
         <div class="col-4">
           <h5>Bug Title:</h5>
@@ -251,7 +253,7 @@ export default {
       user: computed(() => AppState.user),
       bugcreator: computed(() => AppState.activebug.creator.Id),
       bug: computed(() => AppState.activebug),
-      editBug: computed(() => AppState.activebug),
+      // editBug: computed(() => AppState.activebug),
       notes: computed(() => AppState.notes),
       createdDate: computed(() => {
         const d = new Date(AppState.activebug.updatedAt)
