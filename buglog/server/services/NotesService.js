@@ -12,8 +12,8 @@ class NotesService {
   }
 
   // To find all notes by BugID
-  async getByBugId(bugid) {
-    const note = await dbContext.Notes.findById(bugid)
+  async getNotesByBugId(bugid) {
+    const note = await dbContext.Notes.find({ bugId: bugid }).populate('creator', 'name picture')
     if (!note) {
       throw new BadRequest('Invalid Bug ID')
     }
@@ -22,15 +22,24 @@ class NotesService {
 
   // to create a Note
   async create(body) {
+    // debugger
     const note = await dbContext.Notes.create(body)
     return await dbContext.Notes.findById(note._id).populate('creator', 'name picture')
+  }
+
+  async updateNote(body) {
+    const note = await dbContext.Notes.findByIdAndUpdate(body.id, body)
+    if (!note) {
+      throw new BadRequest('Invalid Note ID')
+    }
+    return note
   }
 
   // To delete a Note
   async destroy(id, user) {
     const note = await this.getById(id)
     if (user.id === note.creatorId.toString()) {
-      await this.getById(id)
+      // await this.getById(id)
       return await dbContext.Notes.findByIdAndDelete(id)
     }
   }

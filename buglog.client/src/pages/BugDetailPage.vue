@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-12 col-12 bg-light mt-3 justify-content-between align-items-center">
     <div class="bugInfo m-1 p-1">
-      <!-- <div class="col-md-6" v-if="user.isAuthenticated">
+      <div class="col-md-6" v-if="bug.creator">
         <div class="row bg-dark">
           <div class="col-md-6 col-12 ">
             <small>{{ bug.creator.name }}</small>
@@ -14,16 +14,16 @@
             />
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="row m-1 p-1 border">
         <div class="col-4">
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
         <!-- Commented to understand the way to code as on load it is throwughing  -->
-        <!-- <div class="col-4" v-if="user.isAuthenticated">
+        <div class="col-4" v-if="bug.updatedAt">
           <h5> Bug created Date:</h5> {{ createdDate }}
-        </div> -->
+        </div>
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
             Bug Status: Open
@@ -214,7 +214,7 @@ export default {
       try {
         await bugService.getById(route.params.bugId)
         state.editBug = AppState.activebug
-        // await noteService.getNotesByBugId(route.params.bugId)
+        await noteService.getNotesByBugId(route.params.bugId)
       } catch (error) {
         Pop.toast(error)
       }
@@ -239,8 +239,10 @@ export default {
       async create() {
         try {
           // if user is authenticated an created
+
           state.newNote.bugId = AppState.activebug.id
           await noteService.create(state.newNote)
+          debugger
           await noteService.getNotesByBugId(route.params.bugId)
           state.newNote = { }
         } catch (error) {
@@ -249,6 +251,7 @@ export default {
       },
       async update() {
         try {
+          debugger
           if (AppState.account.id === AppState.activebug.creatorId) {
             logger.log(state.editBug)
             state.editBug.bugId = AppState.activebug.id

@@ -4,9 +4,14 @@
       <BugForm />
     </div>
   </div>
-  <div class="row justify-content-center mt-1">
+  <div class="row justify-content-center p-1 mt-1">
     <br>
-    <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
+    <div v-if="state.isFilter === false">
+      <BugCard v-for="fb in filterdbugs" :key="fb._id" :bug="fb" />
+    </div>
+    <div v-else>
+      <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
+    </div>
   </div>
 </template>
 
@@ -29,12 +34,14 @@ export default {
       }
     })
     const state = reactive({
-      dropOpen: false
+      dropOpen: false,
+      isFilter: true
     })
     return {
       state,
       user: computed(() => AppState.user),
       bugs: computed(() => AppState.bugs),
+      filterdbugs: computed(() => AppState.bugs.filter(b => b.closed === true)),
       async login() {
         AuthService.loginWithPopup()
       },

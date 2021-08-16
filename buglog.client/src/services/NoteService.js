@@ -11,7 +11,7 @@ class NoteService {
   }
 
   async getNotesByBugId(id) {
-    const res = await api.get('api/Notes/' + id)
+    const res = await api.get('api/notes/' + id)
     logger.log('fetched Notes by BugID', res.data)
     AppState.notes = res.data
   }

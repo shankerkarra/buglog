@@ -8,7 +8,7 @@ export class BugController extends BaseController {
     this.router
       .get('', this.getAll)
       .get('/:id', this.getBugById)
-      .get('/:id/Notes', this.getNotesByBugId)
+      .get('/:id/notes', this.getNotesByBugId)
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
@@ -43,7 +43,7 @@ export class BugController extends BaseController {
 
   async getNotesByBugId(req, res, next) {
     try {
-      const bug = await notesService.getByBugId(req.params.id)
+      const bug = await notesService.getNotesByBugId(req.params.id)
       res.send(bug)
     } catch (error) {
       next(error)
@@ -77,7 +77,7 @@ export class BugController extends BaseController {
 
   async delete(req, res, next) {
     try {
-      debugger
+      // debugger
       req.body.creatorId = req.userInfo.id
       req.body.id = req.params.id
       req.body.closed = true
