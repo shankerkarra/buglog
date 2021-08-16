@@ -30,23 +30,21 @@ class BugService {
   }
 
   async update(id, body) {
-    const bug = await this.getById(id)
-    if (user.id === bug.creatorId.toString()) {
-      const res = await api.put('api/bugs/' + id, body)
-      logger.log('Udated Bug', res.data)
-      AppState.bugs = res.data
-    }
+    // const bug = await this.getById(id)
+    // if (user.id === bug.creatorId.toString()) {
+    if (AppState.account.id === AppState.activebug.creatorId) {
+
+    const res = await api.put('api/bugs/' + id, body)
+    logger.log('Udated Bug', res.data)
+    AppState.bugs = res.data
+    // }
   }
 
   async destroy(id) {
-    if (await Pop.confirm()) {
-      const bug = await this.getById(id)
-      if (user.id === bug.creatorId.toString()) {
-        await api.delete('api/bugs/' + id)
-        AppState.bugs = AppState.bugs.filter(n => n.id !== id)
-        logger.log('Deleted Successfully')
-      }
-    }
+    await api.delete('api/bugs/' + id)
+    AppState.bugs = AppState.bugs.filter(n => n.id !== id)
+    logger.log('Deleted Successfully')
   }
 }
+
 export const bugService = new BugService()
