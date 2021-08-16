@@ -1,20 +1,8 @@
 <template>
   <div class="container-md">
-    <!-- start here  -->
-
-    <!-- Till here -->
     <div class="row justify-content-center">
       <BugForm />
     </div>
-  </div>
-  <div class="row justify-content-center mt-1">
-    <div class="tableheader">
-      <td> Title</td>
-      <td>creator.name </td>
-      <td>createdDate </td>
-      <td>Bug Status </td>
-    </div>
-    <br>
   </div>
   <div class="row justify-content-center mt-1">
     <br>

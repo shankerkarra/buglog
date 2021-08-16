@@ -27,11 +27,12 @@
             Bugs List
           </router-link>
         </li>
-        <li class="nav-item">
+        <!-- Not using this option -->
+        <!-- <li class="nav-item">
           <router-link :to="{ name: 'NewBug' }" class="nav-link">
             Add a Bug
           </router-link>
-        </li>
+        </li> -->
       </ul>
       <span class="navbar-text">
         <button

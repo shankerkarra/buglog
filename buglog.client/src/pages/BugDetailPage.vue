@@ -11,15 +11,15 @@
           class="rounded"
         />
       </div>
-    </div> -->
+     </div> -->
       <div class="row m-1 p-1 border">
         <div class="col-4">
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
-        <!-- Commented to understan the way to code -->
+        <!-- Commented to understand the way to code as on load it is throwing error -->
         <!-- <div class="col-4" v-if="user.isAuthenticated">
-          <h5> Bug created Date:</h5> {{ createdDate }}
+        <h5> Bug created Date: </h5> {{ createdDate }}
         </div> -->
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
@@ -34,38 +34,38 @@
           <h5>Bug Description:</h5>{{ bug.description }}
         </div>
       </div>
-      <!-- <div id="app">
-        <div>
-          First Name:
-          <input type="text"
-                 v-model="bug.title"
-                 :disabled="!isEditing"
-                 :class="{view: !isEditing}"
-          >
-        </div><div>
-          Last Name:
-          <input type="text"
-                 v-model="bug.description"
-                 :disabled="!isEditing"
-                 :class="{view: !isEditing}"
-          >
-        </div>
-        <button @click="isEditing = !isEditing">
-          {{ isEditing ? 'Save' : 'Edit' }}
-        </button>
-        <button v-if="isEditing" @click="isEditing = false">
-          Cancel
-        </button>
-      </div> -->
+      <!-- <div>
+        First Name:
+        <input type="text"
+               v-model="bug.title"
+               :disabled="!isEditing"
+               :class="{view: !isEditing}"
+        >
+      </div>
+      <div>
+        Last Name:
+        <input type="text"
+               v-model="bug.description"
+               :disabled="!isEditing"
+               :class="{view: !isEditing}"
+        >
+      </div>
+      <button @click="isEditing = !isEditing">
+        {{ isEditing ? 'Save' : 'Edit' }}
+      </button>
+      <button v-if="isEditing" @click="isEditing = false">
+        Cancel
+      </button> -->
     </div>
+    <!-- </div> -->
     <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
       <h5 class="pt-3" @click="destory(bug.id)" v-if="bug.closed === false">
         🗑 Close the bug
       </h5>
     </div>
     <div class="row" v-if="user.isAuthenticated">
-      <div class="col-4">
-        <p style="color: Green;" v-if="bug.closed === false">
+      <div class="col-4" v-if="bug.closed === false">
+        <p style="color: Green;" v-if="account.id === bug.creator.id">
           <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Editbug'">
             Edit
           </button>
@@ -85,7 +85,7 @@
           </div>
         </div>
         <!-- </div> -->
-        <div class="row justify-content-center mt-3">
+        <div class="row justify-content-center mt-2">
           <NotesCard v-for="n in notes" :key="n.id" :note="n" />
         </div>
       </div>
@@ -275,28 +275,34 @@ export default {
       },
       async update() {
         try {
-          debugger
-          // if (user.id === bug.creatorId.toString()) {
-          logger.log(state.editBug)
-          state.editBug.bugId = AppState.activebug.id
-          // state.editBug.title = state.bug.title
-          // state.editBug.description = state.bug.description
-          debugger
-          await bugService.update(state.editBug)
-          await noteService.getNotesByBugId(route.params.bugId)
-          // const bug = await this.getById(id)
-          // }
+          if (AppState.account.id === AppState.activebug.creatorId) {
+            logger.log(state.editBug)
+            state.editBug.bugId = AppState.activebug.id
+            // state.editBug.title = state.bug.title
+            // state.editBug.description = state.bug.description
+            await bugService.update(state.editBug)
+            await noteService.getNotesByBugId(route.params.bugId)
+          }
+        } catch (error) {
+          Pop.toast(error)
+        }
+      },
+      async destory(id) {
+        try {
+          if (await Pop.confirm()) {
+            if (AppState.account.id === AppState.activebug.creatorId) {
+              await bugService.destroy(id)
+              await noteService.getNotesByBugId(id)
+            } else { Pop.toast('You can not delete other\'s bug') }
+          }
         } catch (error) {
           Pop.toast(error)
         }
       }
-
-      // async destro(bugid){
-
-      // }
     }
   }
 }
+
 </script>
 
 <style scoped lang="scss">

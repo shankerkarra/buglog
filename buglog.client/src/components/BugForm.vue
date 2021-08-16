@@ -7,7 +7,7 @@
           name="name"
           v-model="state.newBug.title"
           class="form-control"
-          placeholder="Bug Titlte..."
+          placeholder="Bug Title..."
           required
         />
       </div>
@@ -17,7 +17,7 @@
           name="description"
           v-model="state.newBug.description"
           class="form-control"
-          placeholder="What is this bug about?"
+          placeholder="What is this bug about?..."
         />
       </div>
       <div class="d-flex align-items-center">
