@@ -32,7 +32,7 @@ class BugsService {
   // findByIdAndUpdate
   // AssertionError: The bug was closed through a PUT request, this should only be possible through a DELETE request: expected true to deeply equal false
   async delete(body) {
-    const bug = await dbContext.Bugs.findOneAndUpdate(body.id, body, { new: true, runValidators: true })
+    const bug = await dbContext.Bugs.findByIdAndUpdate(body.id, body, { new: true, runValidators: true })
     if (!bug) {
       throw new BadRequest('Invalid Bug ID')
     }

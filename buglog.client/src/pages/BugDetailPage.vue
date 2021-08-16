@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-12 col-12 bg-light mt-3 justify-content-between align-items-center">
     <div class="bugInfo m-1 p-1">
-      <div class="col-md-6" v-if="user.isAuthenticated">
+      <!-- <div class="col-md-6" v-if="user.isAuthenticated">
         <div class="row bg-dark">
           <div class="col-md-6 col-12 ">
             <small>{{ bug.creator.name }}</small>
@@ -14,16 +14,16 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="row m-1 p-1 border">
         <div class="col-4">
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
         <!-- Commented to understand the way to code as on load it is throwughing  -->
-        <div class="col-4" v-if="user.isAuthenticated">
+        <!-- <div class="col-4" v-if="user.isAuthenticated">
           <h5> Bug created Date:</h5> {{ createdDate }}
-        </div>
+        </div> -->
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
             Bug Status: Open
@@ -37,28 +37,6 @@
           <h5>Bug Description:</h5>{{ bug.description }}
         </div>
       </div>
-      <!-- <div>
-        First Name:
-        <input type="text"
-               v-model="bug.title"
-               :disabled="!isEditing"
-               :class="{view: !isEditing}"
-        >
-      </div>
-      <div>
-        Last Name:
-        <input type="text"
-               v-model="bug.description"
-               :disabled="!isEditing"
-               :class="{view: !isEditing}"
-        >
-      </div>
-      <button @click="isEditing = !isEditing">
-        {{ isEditing ? 'Save' : 'Edit' }}
-      </button>
-      <button v-if="isEditing" @click="isEditing = false">
-        Cancel
-      </button> -->
     </div>
     <!-- </div> -->
     <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
@@ -231,13 +209,6 @@ export default {
     const state = reactive({
       newNote: { },
       editBug: { }
-      // data: {
-      //   isEditing: false,
-      //   user: {
-      //     firstName: 'John',
-      //     lastName: 'Smith'
-      //   }
-      // }
     })
     onMounted(async() => {
       try {
@@ -281,10 +252,9 @@ export default {
           if (AppState.account.id === AppState.activebug.creatorId) {
             logger.log(state.editBug)
             state.editBug.bugId = AppState.activebug.id
-            // state.editBug.title = state.bug.title
-            // state.editBug.description = state.bug.description
-            await bugService.update(state.editBug)
-            await noteService.getNotesByBugId(route.params.bugId)
+            await bugService.update(state.editBug.bugId, state.editBug)
+            // Need to fix the NOTESSERVICE( POSTMAN)
+            // await noteService.getNotesByBugId(route.params.bugId)
           }
         } catch (error) {
           Pop.toast(error)
@@ -295,7 +265,7 @@ export default {
           if (await Pop.confirm()) {
             if (AppState.account.id === AppState.activebug.creatorId) {
               await bugService.destroy(id)
-              await noteService.getNotesByBugId(id)
+              // await noteService.getNotesByBugId(id)
             } else { Pop.toast('You can not delete other\'s bug') }
           }
         } catch (error) {
