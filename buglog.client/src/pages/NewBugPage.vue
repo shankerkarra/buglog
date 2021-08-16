@@ -12,7 +12,7 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary">
-        Sign in
+        Save
       </button>
     </form>
   </div>
@@ -20,7 +20,6 @@
 
 <script>
 export default {
-  // name: 'AboutPage'
   name: 'NewBugForm'
 }
 </script>

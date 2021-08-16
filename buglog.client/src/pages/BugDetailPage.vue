@@ -17,9 +17,10 @@
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
-        <div class="col-4">
-          <h5> Bug created Date:</h5> {{ bug.updatedAt }}
-        </div>
+        <!-- Commented to understan the way to code -->
+        <!-- <div class="col-4" v-if="user.isAuthenticated">
+          <h5> Bug created Date:</h5> {{ createdDate }}
+        </div> -->
         <div class="col-4">
           <p style="color: Green;" v-if="bug.closed === false">
             Bug Status: Open
@@ -33,6 +34,29 @@
           <h5>Bug Description:</h5>{{ bug.description }}
         </div>
       </div>
+      <!-- <div id="app">
+        <div>
+          First Name:
+          <input type="text"
+                 v-model="bug.title"
+                 :disabled="!isEditing"
+                 :class="{view: !isEditing}"
+          >
+        </div><div>
+          Last Name:
+          <input type="text"
+                 v-model="bug.description"
+                 :disabled="!isEditing"
+                 :class="{view: !isEditing}"
+          >
+        </div>
+        <button @click="isEditing = !isEditing">
+          {{ isEditing ? 'Save' : 'Edit' }}
+        </button>
+        <button v-if="isEditing" @click="isEditing = false">
+          Cancel
+        </button>
+      </div> -->
     </div>
     <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
       <h5 class="pt-3" @click="destory(bug.id)" v-if="bug.closed === false">
@@ -42,7 +66,7 @@
     <div class="row" v-if="user.isAuthenticated">
       <div class="col-4">
         <p style="color: Green;" v-if="bug.closed === false">
-          <button type="button" class="btn btn-success" data-dismiss="modal">
+          <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Editbug'">
             Edit
           </button>
         </p>
@@ -63,6 +87,72 @@
         <!-- </div> -->
         <div class="row justify-content-center mt-3">
           <NotesCard v-for="n in notes" :key="n.id" :note="n" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Bug Edit -->
+  <div class="modal fade"
+       :id="'Editbug'"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="BugTitle"
+       aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-between">
+          <h5 class="modal-title" id="BugTitle">
+            Notes for Bug Title : <br>
+            <small>{{ bug.title }}</small>
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-start">
+            <div class="post-form">
+              <form class="d-flex" @submit.prevent="update">
+                <div class="form-group col-md-12 pt-3">
+                  <textarea
+                    type="text"
+                    rows="5"
+                    cols="40"
+                    name="title"
+                    class="form-control"
+                    v-model="state.editBug.title"
+                    placeholder="Bug Title....."
+                    required
+                  />
+                  <br>
+                  <textarea
+                    type="text"
+                    rows="5"
+                    cols="40"
+                    name="desription"
+                    class="form-control"
+                    v-model="state.editBug.description"
+                    placeholder="Bug Description...."
+                    required
+                  />
+                </div>
+                <div class="d-flex align-items-center">
+                  <button type="submit" class="btn btn-outline-dark">
+                    Edit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <div class="col-md-2 col-2">
+            <button type="button" class="btn btn-dark" data-dismiss="modal" data-toggle="modal" :data-target="'#Task'">
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -127,7 +217,7 @@ import { computed, onMounted, reactive } from '@vue/runtime-core'
 import { AppState } from '../AppState'
 import Pop from '../utils/Notifier'
 import { useRoute } from 'vue-router'
-// import { logger } from '../utils/Logger'
+import { logger } from '../utils/Logger'
 import { noteService } from '../services/NoteService'
 import { bugService } from '../services/BugService'
 
@@ -138,10 +228,18 @@ export default {
     const state = reactive({
       newNote: { },
       editBug: { }
+      // data: {
+      //   isEditing: false,
+      //   user: {
+      //     firstName: 'John',
+      //     lastName: 'Smith'
+      //   }
+      // }
     })
     onMounted(async() => {
       try {
         await bugService.getById(route.params.bugId)
+        state.editBug = AppState.activebug
         // await noteService.getNotesByBugId(route.params.bugId)
       } catch (error) {
         Pop.toast(error)
@@ -153,6 +251,7 @@ export default {
       user: computed(() => AppState.user),
       bugcreator: computed(() => AppState.activebug.creator.Id),
       bug: computed(() => AppState.activebug),
+      editBug: computed(() => AppState.activebug),
       notes: computed(() => AppState.notes),
       createdDate: computed(() => {
         const d = new Date(AppState.activebug.updatedAt)
@@ -161,28 +260,40 @@ export default {
       }),
       async current() {
         await bugService.getById(route.params.bugId)
-        await noteService.getByBugId(route.params.bugId)
+        await noteService.getNotesByBugId(route.params.bugId)
       },
       async create() {
         try {
-          // state.newNote.taskId = AppState.activeTask.id
-          // await noteService.create(state.newNote)
-          // await taskService.getNotesByTasks(AppState.activeTask.id)
-          // state.newNote = { }
+          // if user is authenticated an created
+          state.newNote.bugId = AppState.activebug.id
+          await noteService.create(state.newNote)
+          await noteService.getNotesByBugId(route.params.bugId)
+          state.newNote = { }
         } catch (error) {
           Pop.toast(error)
         }
       },
       async update() {
         try {
-          // logger.log(state.editTask)
-          // await taskService.update(props.task.id, state.editTask)
-          // await sprintService.getTaskBySprint(props.task.sprintId)
-          // state.editTask = { }
+          debugger
+          // if (user.id === bug.creatorId.toString()) {
+          logger.log(state.editBug)
+          state.editBug.bugId = AppState.activebug.id
+          // state.editBug.title = state.bug.title
+          // state.editBug.description = state.bug.description
+          debugger
+          await bugService.update(state.editBug)
+          await noteService.getNotesByBugId(route.params.bugId)
+          // const bug = await this.getById(id)
+          // }
         } catch (error) {
           Pop.toast(error)
         }
       }
+
+      // async destro(bugid){
+
+      // }
     }
   }
 }
@@ -205,6 +316,10 @@ export default {
    margin-bottom: 1;
 }
 
+.textarea {
+  width: 250px;
+  height: 100px;
+}
 // .text-header { color: white; text-align: center; top: 30px; width: 110px; left: 35%; position: absolute; background: green;}
 
 </style>

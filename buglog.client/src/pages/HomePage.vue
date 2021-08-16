@@ -1,10 +1,23 @@
 <template>
   <div class="container-md">
+    <!-- start here  -->
+
+    <!-- Till here -->
     <div class="row justify-content-center">
       <BugForm />
     </div>
   </div>
   <div class="row justify-content-center mt-1">
+    <div class="tableheader">
+      <td> Title</td>
+      <td>creator.name </td>
+      <td>createdDate </td>
+      <td>Bug Status </td>
+    </div>
+    <br>
+  </div>
+  <div class="row justify-content-center mt-1">
+    <br>
     <BugCard v-for="b in bugs" :key="b._id" :bug="b" />
   </div>
 </template>
@@ -27,13 +40,6 @@ export default {
         Pop.toast('Couldn\'t find Bugs - ', error)
       }
     })
-    // methods: {
-    //     createdDate: computed(() => {
-    //     const d = new Date(bugs.updatedAt)
-    //     return new Intl.DateTimeFormat('en-US').format(d)
-    //     // new TimeAgo(d) props.project.createdAt
-    //   })
-    // },
     const state = reactive({
       dropOpen: false
     })
@@ -41,11 +47,6 @@ export default {
       state,
       user: computed(() => AppState.user),
       bugs: computed(() => AppState.bugs),
-      // createdDate: computed(() => {
-      //   const d = new Date(bugs.updatedAt)
-      //   return new Intl.DateTimeFormat('en-US').format(d)
-      //   // new TimeAgo(d) props.project.createdAt
-      // }),
       async login() {
         AuthService.loginWithPopup()
       },

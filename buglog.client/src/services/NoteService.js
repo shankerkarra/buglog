@@ -1,6 +1,7 @@
 import { logger } from '../utils/Logger'
 import { api } from './AxiosService'
 import { AppState } from '../AppState.js'
+import Pop from '../utils/Notifier'
 
 class NoteService {
   async getById(id) {
@@ -11,6 +12,7 @@ class NoteService {
 
   async getNotesByBugId(id) {
     const res = await api.get('api/Notes/' + id)
+    logger.log('fetched Notes by BugID', res.data)
     AppState.notes = res.data
   }
 
@@ -21,15 +23,25 @@ class NoteService {
   }
 
   async update(id, body) {
-    const res = await api.put('api/notes/' + id, body)
-    logger.log('Udated Notes', res.data)
-    AppState.notes = res.data
+    const note = await this.getById(id)
+    if (user.id === note.creatorId.toString()) {
+      if (await Pop.confirm()) {
+        const res = await api.put('api/notes/' + id, body)
+        logger.log('Udated Notes', res.data)
+        AppState.notes = res.data
+      }
+    }
   }
 
   async destroy(id) {
-    await api.delete('api/notes/' + id)
-    AppState.notes = AppState.notes.filter(n => n.id !== id)
-    logger.log('Deleted Successfully')
+    if (await Pop.confirm()) {
+      const note = await this.getById(id)
+      if (user.id === note.creatorId.toString()) {
+        await api.delete('api/notes/' + id)
+        AppState.notes = AppState.notes.filter(n => n.id !== id)
+        logger.log('Deleted Successfully')
+      }
+    }
   }
 }
 
