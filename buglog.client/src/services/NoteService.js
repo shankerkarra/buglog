@@ -39,14 +39,14 @@ class NoteService {
   async destroy(id) {
     if (await Pop.confirm()) {
       // debugger
-      const note = await noteService.getById(id)
+      // const note = await noteService.getById(id)
       // if (AppState.user.id === note.creatorId.toString()) {
 
-      if (AppState.account.id === note.creatorId) {
-        await api.delete('api/notes/' + id)
-        AppState.notes = AppState.notes.filter(n => n.id !== id)
-        //       logger.log('Deleted Successfully')
-      }
+      // if (AppState.account.id === note.creatorId) {
+      await api.delete('api/notes/' + id)
+      AppState.notes = AppState.notes.filter(n => n.id !== id)
+      //       logger.log('Deleted Successfully')
+      // }
     }
   }
 }

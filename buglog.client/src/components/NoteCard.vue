@@ -132,7 +132,7 @@ export default {
 
       async destory(id, bugId) {
         await noteService.destroy(id)
-        await bugService.getNotesByBugId(bugId)
+        // await bugService.getNotesByBugId(bugId)
       }
     }
   }

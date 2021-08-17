@@ -1,4 +1,4 @@
-import { BadRequest } from '../utils/Errors'
+import { BadRequest, Forbidden } from '../utils/Errors'
 import { dbContext } from '../db/DbContext'
 
 class NotesService {
@@ -23,26 +23,48 @@ class NotesService {
   // to create a Note
   async create(body) {
     // debugger
+    // validate if user / closed or not ( Mick suggestion)
     const note = await dbContext.Notes.create(body)
-    return await dbContext.Notes.findById(note._id).populate('creator', 'name picture')
+    return await dbContext.Notes.findById(note.id).populate('creator', 'name picture')
   }
 
   async updateNote(body) {
-    const note = await dbContext.Notes.findByIdAndUpdate(body.id, body)
+    // validate if user / closed or not ( Mick suggestion)
+
+    // const note = await dbContext.Notes.getById(body.id)
+    // if (note.creatorId === note.creatorId.toString()) {
+    //   const unote = await dbContext.Notes.findByIdAndUpdate(body.id, body)
+    //   if (!unote) {
+    //     throw new BadRequest('Invalid Note ID')
+    //   }
+    //   return note
+    // }
+    const note = await this.getById(body.id)
     if (!note) {
-      throw new BadRequest('Invalid Note ID')
+      throw new BadRequest('Invalid Id')
     }
-    return note
+    if (note.creatorId.toString() !== body.creatorId) {
+      throw new Forbidden('This is not your Bug')
+    }
+    return await dbContext.Notes.findByIdAndUpdate(body.id, body)
   }
 
   // To delete a Note
   async destroy(id, user) {
     const note = await this.getById(id)
-    if (user.id === note.creatorId.toString()) {
-      // await this.getById(id)
-      return await dbContext.Notes.findByIdAndDelete(id)
+    if (!note) {
+      throw new BadRequest('Invalid Id')
     }
+    if (note.creatorId.toString() !== user.id) {
+      throw new Forbidden('This is not your Bug')
+    }
+    return await dbContext.Notes.findByIdAndDelete(id)
   }
+  // const note = await this.getById(id)
+  // if (user.id === note.creatorId.toString()) {
+  //   // await this.getById(id)
+  //   return await dbContext.Notes.findByIdAndDelete(id)
+  // }
 }
 
 export const notesService = new NotesService()
