@@ -4,14 +4,16 @@
     <router-link :to="{ name: 'BugDetails', params: {bugId: bug.id} }">
       <td> {{ bug.title }}</td>
     </router-link>
-    <td><small>{{ bug.creator.name }}</small></td>
-    <img
-      :src="bug.creator.picture"
-      alt="user photo"
-      height="25"
-      class="rounded"
-    />
-    <td>{{ createdDate }}</td>
+    <div class="bugcreator" v-if="bug.creator">
+      <td><small>{{ bug.creator.name }}</small></td>
+      <img
+        :src="bug.creator.picture"
+        alt="user photo"
+        height="25"
+        class="rounded"
+      />
+      <td>{{ createdDate }}</td>
+    </div>
     <td>
       <p style="color: Green;" v-if="bug.closed === false">
         Open

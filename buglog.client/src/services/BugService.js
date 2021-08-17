@@ -36,7 +36,7 @@ class BugService {
     if (AppState.account.id === AppState.activebug.creatorId) {
       const res = await api.put('api/bugs/' + id, body)
       //    logger.log('Updated Bug', res.data)
-      AppState.bugs = res.data
+      //    AppState.bugs = res.data
       // }
     }
   }

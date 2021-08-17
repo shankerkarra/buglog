@@ -43,13 +43,13 @@ class BugsService {
   // AssertionError: The bug was closed through a PUT request, this should only be possible through a DELETE request: expected true to deeply equal false
   async delete(body) {
     // validate if user / closed or not ( Mick suggestion)
-    const note = await this.getById(body.id)
-    if (!note) { throw new BadRequest('Invalid Id') }
+    const singlebug = await this.getById(body.id)
+    if (!singlebug) { throw new BadRequest('Invalid Id') }
 
-    if (note.creatorId.toString() !== body.creatorId) {
+    if (singlebug.creatorId.toString() !== body.creatorId) {
       throw new Forbidden('This is not your Bug')
     }
-    if (note.closed === true) { throw new BadRequest('Invalid Bug ID') }
+    if (singlebug.closed === true) { throw new BadRequest('Bug is already closed') }
     const bug = await dbContext.Bugs.findByIdAndUpdate(body.id, body, { new: true, runValidators: true })
     return bug
   }
