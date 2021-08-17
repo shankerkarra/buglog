@@ -6,12 +6,12 @@
   </div>
   <div class="row p-4 justify-content-center p-1 mt-1">
     <div class="div">
-      <label for="flip-1">Flip switch:</label>
+      <label for="flip-1">Bugs:</label>
       <select name="flip-1" id="flip-1" data-role="slider">
-        <option value="state.isFilter = false">
+        <option value="state.isFilter == false">
           All
         </option>
-        <option value="state.isFilter = true">
+        <option value="state.isFilter == true">
           Closed
         </option>
       </select>

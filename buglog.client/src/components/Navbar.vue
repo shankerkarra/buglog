@@ -28,8 +28,7 @@
           </router-link>
         </li>
         <!-- <div class="div">
-          <p> Checkbox </p>
-          <label for="flip-1">Flip switch:</label>
+          <label for="flip-1">Bugs Filter:</label>
           <select name="flip-1" id="flip-1" data-role="slider">
             <option value="AppState.isFilter = false">
               All
