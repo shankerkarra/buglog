@@ -7,5 +7,6 @@ export const AppState = reactive({
   bugs: [],
   activebug: [],
   notes: [],
-  activeNote: []
+  activeNote: [],
+  isFilter: '' | false
 })

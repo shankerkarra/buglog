@@ -5,6 +5,20 @@
     </div>
   </div>
   <div class="row justify-content-center p-1 mt-1">
+    <div class="div">
+      <label for="flip-1">Flip switch:</label>
+      <select name="flip-1" id="flip-1" data-role="slider">
+        <option value="state.isFilter = false">
+          All
+        </option>
+        <option value="state.isFilter = true">
+          Closed
+        </option>
+      </select>
+    </div>
+    <!-- $(document).delegate("#submit", "vclick", function() {
+    alert($("#flip-1").val());
+}); -->
     <br>
     <div v-if="state.isFilter === false">
       <BugCard v-for="fb in filterdbugs" :key="fb._id" :bug="fb" />
@@ -35,12 +49,14 @@ export default {
     })
     const state = reactive({
       dropOpen: false,
-      isFilter: true
+      isFilter: computed(() => AppState.isFilter)
+      // isFilter: true
     })
     return {
       state,
       user: computed(() => AppState.user),
       bugs: computed(() => AppState.bugs),
+      isFilter: computed(() => AppState.isFilter),
       filterdbugs: computed(() => AppState.bugs.filter(b => b.closed === true)),
       async login() {
         AuthService.loginWithPopup()
@@ -54,6 +70,8 @@ export default {
     BugForm
   }
 }
+//  $(document).delegate("#submit", "vclick", function() {
+//     alert($("#flip-1").val())
 </script>
 
 <style scoped lang="scss">

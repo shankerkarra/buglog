@@ -20,7 +20,7 @@
           <h5>Bug Title:</h5>
           {{ bug.title }}
         </div>
-        <!-- Commented to understand the way to code as on load it is throwughing  -->
+        <!-- Commented to understand the way to code as on load it is throwing  -->
         <div class="col-4" v-if="bug.updatedAt">
           <h5> Bug created Date:</h5> {{ createdDate }}
         </div>
@@ -40,7 +40,7 @@
     </div>
     <!-- </div> -->
     <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
-      <h5 class="pt-3" @click="destory(bug.id)" v-if="bug.closed === false">
+      <h5 class="pt-3" @click="destory(bug.id,'bug')" v-if="bug.closed === false">
         🗑 Close the bug
       </h5>
     </div>
@@ -51,26 +51,35 @@
             Edit
           </button>
         </p>
+        <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
+          Add Notes
+        </button>
       </div>
     </div>
+    <!-- <div class="col-md-2 p-4 col-2" v-if="bug.closed === false">
+      <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
+        Add Notes
+      </button>
+    </div> -->
   </div>
-  <div class="col-md-12 col-12 bg-primary mt-3 justify-content-between align-items-center">
-    <div class="bugnoteInfo m-1 p-1">
-      <div class="row m-1 p-2 border">
-        <!-- <div class="container-md"> -->
-        <div class="modal-footer justify-content-between" v-if="user.isAuthenticated">
-          <div class="col-md-2 col-2" v-if="bug.closed === false">
+  <div class="col-md-12 col-12  bg-light mt-3 justify-content-between align-items-center">
+    <!-- <div class="bugnoteInfo m-1 p-1"> -->
+    <div class="row m-1 p-2 border border-black">
+      <!-- <div class="container-md"> -->
+      <!-- <div class="modal-footer justify-content-between"> -->
+      <!-- v-if="user.isAuthenticated" -->
+      <!-- <div class="col-md-2 col-2" v-if="bug.closed === false">
             <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
               Add Notes
             </button>
-          </div>
-        </div>
-        <!-- </div> -->
-        <div class="row justify-content-center mt-2">
-          <NotesCard v-for="n in notes" :key="n.id" :note="n" />
-        </div>
-      </div>
+          </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- <div class="row justify-content-center mt-2"> -->
+      <NoteCard v-for="n in notes" :key="n.id" :note="n" />
+      <!-- </div> -->
     </div>
+    <!-- </div> -->
   </div>
 
   <!-- Modal for Bug Edit -->
@@ -239,10 +248,8 @@ export default {
       async create() {
         try {
           // if user is authenticated an created
-
           state.newNote.bugId = AppState.activebug.id
           await noteService.create(state.newNote)
-          debugger
           await noteService.getNotesByBugId(route.params.bugId)
           state.newNote = { }
         } catch (error) {
@@ -251,7 +258,7 @@ export default {
       },
       async update() {
         try {
-          debugger
+          //     debugger
           if (AppState.account.id === AppState.activebug.creatorId) {
             logger.log(state.editBug)
             state.editBug.bugId = AppState.activebug.id
@@ -263,7 +270,8 @@ export default {
           Pop.toast(error)
         }
       },
-      async destory(id) {
+      async destory(id, adhocinfo) {
+        if (adhocinfo === 'bug') { logger.log('clicked from Bug delete') } else { logger.log('clicked from Note delete') }
         try {
           if (await Pop.confirm()) {
             if (AppState.account.id === AppState.activebug.creatorId) {

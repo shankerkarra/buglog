@@ -27,12 +27,18 @@
             Bugs List
           </router-link>
         </li>
-        <!-- Not using this option -->
-        <!-- <li class="nav-item">
-          <router-link :to="{ name: 'NewBug' }" class="nav-link">
-            Add a Bug
-          </router-link>
-        </li> -->
+        <!-- <div class="div">
+          <p> Checkbox </p>
+          <label for="flip-1">Flip switch:</label>
+          <select name="flip-1" id="flip-1" data-role="slider">
+            <option value="AppState.isFilter = false">
+              All
+            </option>
+            <option value="AppState.isFilter = true">
+              Closed
+            </option>
+          </select>
+        </div> -->
       </ul>
       <span class="navbar-text">
         <button
