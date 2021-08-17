@@ -152,7 +152,7 @@
     </div>
   </div>
 
-  <!-- Modal for Notes -->
+  <!-- Modal for Add Notes -->
   <div class="modal fade"
        :id="'Notes'"
        tabindex="-1"
@@ -264,7 +264,7 @@ export default {
         try {
           //     debugger
           if (AppState.account.id === AppState.activebug.creatorId) {
-            logger.log(state.editBug)
+            //     logger.log(state.editBug)
             state.editBug.bugId = AppState.activebug.id
             await bugService.update(state.editBug.bugId, state.editBug)
             // Need to fix the NOTESSERVICE( POSTMAN)
