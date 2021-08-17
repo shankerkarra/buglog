@@ -4,20 +4,14 @@
     <router-link :to="{ name: 'BugDetails', params: {bugId: bug.id} }">
       <td> {{ bug.title }}</td>
     </router-link>
-    <!-- Issues when we refresh -->
-    <div v-if="bug.creator">
-      <td><small>{{ bug.creator.name }}</small></td>
-      <img
-        :src="bug.creator.picture"
-        alt="user photo"
-        height="25"
-        class="rounded"
-      />
-    </div>
-    <div v-if="bug.updatedAt">
-      <td>{{ createdDate }}</td>
-      <!-- </td> -->
-    </div>
+    <td><small>{{ bug.creator.name }}</small></td>
+    <img
+      :src="bug.creator.picture"
+      alt="user photo"
+      height="25"
+      class="rounded"
+    />
+    <td>{{ createdDate }}</td>
     <td>
       <p style="color: Green;" v-if="bug.closed === false">
         Open

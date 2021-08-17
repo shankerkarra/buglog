@@ -4,7 +4,7 @@
       <BugForm />
     </div>
   </div>
-  <div class="row justify-content-center p-1 mt-1">
+  <div class="row p-4 justify-content-center p-1 mt-1">
     <div class="div">
       <label for="flip-1">Flip switch:</label>
       <select name="flip-1" id="flip-1" data-role="slider">
@@ -17,10 +17,9 @@
       </select>
     </div>
     <!-- $(document).delegate("#submit", "vclick", function() {
-    alert($("#flip-1").val());
-}); -->
+    alert($("#flip-1").val());}); -->
     <br>
-    <div v-if="state.isFilter === false">
+    <div class="filterdbugs p-2" v-if="state.isFilter === false">
       <BugCard v-for="fb in filterdbugs" :key="fb._id" :bug="fb" />
     </div>
     <div v-else>

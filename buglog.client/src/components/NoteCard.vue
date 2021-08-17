@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 border justify-content-around align-items-center">
-    <div class="row p-3 m-1 border">
+    <div class="row p-3 m-1 bg-dark border">
       <!-- <div class="col-12"> -->
       <!-- <p class="pt-3 text-dark">
         {{ note.creator.name }}
@@ -31,7 +31,7 @@
         </p>
       </div>
     </div>
-    <div class="row m-2 border">
+    <div class="row m-2 border" v-if="account.id === note.creator.id">
       <div class="col-md-6 m-1 col-6 d-flex justify-content-between align-items-center">
         <h5 class="pt-3 pb-2 hoverable" @click="destory(note.id, note.bugId)">
           🗑 Delete the Note

@@ -3,7 +3,7 @@
     <div class="bugInfo m-1 p-1">
       <div class="col-md-6" v-if="bug.creator">
         <div class="row bg-dark">
-          <div class="col-md-6 col-12 ">
+          <div class="col-md-6 col-7">
             <small>{{ bug.creator.name }}</small>
             &nbsp;
             <img
@@ -32,30 +32,34 @@
           </p>
         </div>
       </div>
-      <div class="row m-1 p1 border">
+      <div class="row m-1 p-1 border">
         <div class="col-12">
           <h5>Bug Description:</h5>{{ bug.description }}
         </div>
       </div>
     </div>
     <!-- </div> -->
-    <div class="row hoverable justify-content-center" v-if="user.isAuthenticated">
-      <h5 class="pt-3" @click="destory(bug.id,'bug')" v-if="bug.closed === false">
-        🗑 Close the bug
-      </h5>
-    </div>
-    <div class="row" v-if="user.isAuthenticated">
-      <div class="col-4" v-if="bug.closed === false">
+    <div class="row border justify-content-center" v-if="user.isAuthenticated">
+      <div class="col-4 px-4 hoverable" v-if="bug.closed === false">
+        <h5 class="pt-3" @click="destory(bug.id,'bug')">
+          🗑 Close the bug
+        </h5>
+      </div>
+      <!-- <div class="row" v-if="user.isAuthenticated"> -->
+      <div class="col-4 p-3 hoverable" v-if="bug.closed === false">
         <p style="color: Green;" v-if="account.id === bug.creator.id">
           <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Editbug'">
             Edit
           </button>
         </p>
+      </div>
+      <div class="col-4 p-3 hoverable" v-if="bug.closed === false">
         <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
           Add Notes
         </button>
       </div>
     </div>
+    <!-- </div> -->
     <!-- <div class="col-md-2 p-4 col-2" v-if="bug.closed === false">
       <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" :data-target="'#Notes'">
         Add Notes
