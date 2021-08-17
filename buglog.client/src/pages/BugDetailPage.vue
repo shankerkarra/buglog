@@ -41,7 +41,7 @@
     <!-- </div> -->
     <div class="row border justify-content-center" v-if="user.isAuthenticated">
       <div class="col-4 px-4 hoverable" v-if="bug.closed === false">
-        <h5 class="pt-3" @click="destory(bug.id,'bug')">
+        <h5 class="pt-3" @click="destory(bug.id)">
           🗑 Close the bug
         </h5>
       </div>
@@ -274,8 +274,7 @@ export default {
           Pop.toast(error)
         }
       },
-      async destory(id, adhocinfo) {
-        if (adhocinfo === 'bug') { logger.log('clicked from Bug delete') } else { logger.log('clicked from Note delete') }
+      async destory(id) {
         try {
           if (await Pop.confirm()) {
             if (AppState.account.id === AppState.activebug.creatorId) {
